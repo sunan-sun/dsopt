@@ -1,6 +1,6 @@
 import json, os, time
 import numpy  as np
-import casadi as ca
+# import casadi as ca
 import cvxpy  as cp
 
 
@@ -119,7 +119,6 @@ class dsopt_class():
         A_vars = []
         Q_vars = []
         constraints = []
-        max_norm = 5
         for k in range(K):
             A_vars.append(cp.Variable((N, N)))
             Q_vars.append(cp.Variable((N, N), symmetric=True))
@@ -129,8 +128,10 @@ class dsopt_class():
 
             constraints += [A_vars[k].T @ P + P @ A_vars[k] == Q_vars[k]]
             constraints += [Q_vars[k] << epi]
-            constraints += [cp.norm(A_vars[k], 'fro') <= max_norm]
+            # constraints += [cp.norm(A_vars[k], 'fro') <= max_norm]
 
+        # max_norm = 5 # this seems to not work well when the data is fast.
+        # do not restrict the norm of A
 
         for k in range(K):
             x_dot_pred_k = A_vars[k] @ self.x_sh.T
