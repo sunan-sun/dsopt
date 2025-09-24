@@ -94,7 +94,8 @@ class dsopt_class():
             try:
                 prob.solve()
                 success=True
-            except:
+            except Exception as e:
+                print(e)
                 print(f"Problem not solved successfully. Retrying...")
                 print(mean_vec)
                 exit()
